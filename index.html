@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini-YouTube</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #333333; /* Gris foncé */
+            color: #ffffff;
+        }
+        header {
+            background-color: white; /* Barre supérieure blanche */
+            color: black; /* Texte noir */
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        header img {
+            height: 50px;
+            margin-right: 10px;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        /* Video List Section */
+        .video-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .video-item {
+            background-color: #444444; /* Gris moyen */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: 300px;
+        }
+        .video-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        .video-item iframe {
+            width: 100%;
+            height: 180px;
+        }
+        .video-item p {
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px;
+            margin: 0;
+            text-align: center;
+        }
+        .video-item button {
+            background-color: #ffffff;
+            color: black;
+            border: 2px solid #7209B7; /* Violet */
+            border-radius: 0 0 10px 10px;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 10px;
+            text-transform: uppercase;
+            width: 100%;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .video-item button:hover {
+            background-color: #7209B7; /* Violet */
+            color: white;
+        }
+
+        /* Main Video Player */
+        #player {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #222222;
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        #player iframe {
+            margin-top: 10px;
+            width: 100%;
+            max-width: 800px;
+            height: 450px;
+            border-radius: 10px;
+        }
+
+        /* Comments Section */
+        .comments-section {
+            display: none; /* Hidden by default */
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #444444;
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+        .comments-section textarea {
+            width: 100%;
+            height: 100px;
+            border: 2px solid #7209B7; /* Violet */
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            resize: none;
+        }
+        .comments-section button {
+            background-color: white;
+            color: black;
+            border: 2px solid #7209B7; /* Violet */
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 10px 20px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .comments-section button:hover {
+            background-color: #7209B7; /* Violet */
+            color: white;
+        }
+
+        /* Like / Dislike buttons */
+        .like-dislike-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .like-dislike-buttons button {
+            background-color: #7209B7; /* Violet */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .like-dislike-buttons button:hover {
+            background-color: #5e0c89; /* Darker Violet */
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #222222;
+            color: white;
+            margin-top: 20px;
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            .video-item {
+                width: 90%;
+            }
+            #player iframe {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div>Mini-YouTube par Adam et Wassim - B1</div>
+    <div class="logo-container">
+        <img src="https://www.epita.fr/wp-content/uploads/2023/06/LOGO-IA-INSTIT-2023-QUADRI-859x1024.png" alt="Logo IA Institut">
+        <span>IA Institut by EPITA & ISG</span>
+    </div>
+</header>
+
+<div class="container">
+    <!-- Liste des vidéos -->
+    <div class="video-list" id="videoList"></div>
+
+    <!-- Lecteur Vidéo -->
+    <div id="player">
+        <p>Lecteur Vidéo</p>
+        <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <!-- Commentaires section pour chaque vidéo -->
+    <div id="commentsSection"></div>
+</div>
+
+<footer>
+    © 2025 Mini-YouTube - Tous droits réservés.
+</footer>
+
+<script>
+    const videos = [
+        { 
+            title: "Naruto et Sasuke vs Momoshiki", 
+            embedUrl: "https://www.youtube.com/embed/RzClCJFpSoM", 
+            fullUrl: "https://www.youtube.com/embed/RzClCJFpSoM" 
+        },
+        { 
+            title: "Kakashi vs Obito", 
+            embedUrl: "https://www.youtube.com/embed/3sw8TEYwfTc", 
+            fullUrl: "https://www.youtube.com/embed/3sw8TEYwfTc" 
+        },
+        { 
+            title: "Madara contre l'Alliance Shinobi", 
+            embedUrl: "https://www.youtube.com/embed/zp6xM6Aezmg", 
+            fullUrl: "https://www.youtube.com/embed/zp6xM6Aezmg" 
+        }
+    ];
+
+    const videoList = document.getElementById('videoList');
+    videos.forEach((video, index) => {
+        const videoItem = document.createElement('div');
+        videoItem.className = 'video-item';
+        videoItem.innerHTML = `
+            <iframe src="${video.embedUrl}" title="${video.title}" allowfullscreen></iframe>
+            <p>${video.title}</p>
+            <button onclick="playVideo('${video.fullUrl}', ${index})">Voir en plein écran</button>
+        `;
+        videoList.appendChild(videoItem);
+    });
+
+    function playVideo(videoURL, index) {
+        const videoPlayer = document.getElementById('videoPlayer');
+        videoPlayer.src = videoURL;
+
+        // Masquer toutes les sections des commentaires et boutons like/dislike
+        const allCommentsSections = document.querySelectorAll('.comments-section');
+        allCommentsSections.forEach(section => {
+            section.style.display = 'none';
+        });
+
+        // Afficher la section de commentaires spécifique pour la vidéo sélectionnée
+        const commentsSection = document.getElementById(`comments-${index}`);
+        commentsSection.style.display = 'block';
+    }
+
+    function postComment(index) {
+        const commentBox = document.getElementById(`commentBox-${index}`);
+        const commentsList = document.getElementById(`commentsList-${index}`);
+        if (commentBox.value.trim()) {
+            const comment = document.createElement('p');
+            comment.textContent = commentBox.value;
+            commentsList.appendChild(comment);
+            commentBox.value = '';
+        }
+    }
+
+    // Fonction pour gérer les likes et dislikes
+    function handleLikeDislike(index, type) {
+        const likeCount = document.getElementById(`likeCount-${index}`);
+        const dislikeCount = document.getElementById(`dislikeCount-${index}`);
+
+        if (type === 'like') {
+            likeCount.textContent = parseInt(likeCount.textContent) + 1;
+        } else {
+            dislikeCount.textContent = parseInt(dislikeCount.textContent) + 1;
+        }
+    }
+
+    // Générer dynamiquement la section des commentaires et des boutons like/dislike pour chaque vidéo
+    const commentsSection = document.getElementById('commentsSection');
+    videos.forEach((video, index) => {
+        const commentSectionDiv = document.createElement('div');
+        commentSectionDiv.className = 'comments-section';
+        commentSectionDiv.id = `comments-${index}`;
+        commentSectionDiv.innerHTML = `
+            <h3>Commentaires</h3>
+            <textarea id="commentBox-${index}" placeholder="Écrivez un commentaire..."></textarea>
+            <button onclick="postComment(${index})">Poster</button>
+            <div id="commentsList-${index}"></div>
+
+            <div class="like-dislike-buttons">
+                <button onclick="handleLikeDislike(${index}, 'like')">Like</button>
+                <span id="likeCount-${index}">0</span>
+
+                <button onclick="handleLikeDislike(${index}, 'dislike')">Dislike</button>
+                <span id="dislikeCount-${index}">0</span>
+            </div>
+        `;
+        commentsSection.appendChild(commentSectionDiv);
+    });
+</script>
+
+</body>
+</html>
